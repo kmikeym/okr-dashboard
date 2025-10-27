@@ -15,16 +15,18 @@ const SHIP_ROLES = [
   "Sailing Master",
   "Ship's Doctor",
   "Cook",
-  "Gunner",
   "Carpenter",
   "Lookout",
   "Cabin Boy",
-  "Swabbie",
 ];
+
+// Hidden role for easter egg (not in dropdown)
+const HIDDEN_ROLES = ["Swabbie"];
 
 // Function to get role rank for sorting
 function getRoleRank(role: string): number {
-  const index = SHIP_ROLES.indexOf(role);
+  const allRoles = [...SHIP_ROLES, ...HIDDEN_ROLES];
+  const index = allRoles.indexOf(role);
   return index === -1 ? 999 : index; // Unknown roles go to the end
 }
 
