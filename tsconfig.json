@@ -9,7 +9,7 @@
     "target": "ESNext",
     "module": "esnext",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "allowJs": true,
     "incremental": true,
     // Bundler mode
