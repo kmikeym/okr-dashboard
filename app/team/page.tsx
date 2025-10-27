@@ -5,25 +5,26 @@ import { ArrowLeft, Plus, Users } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-const SPACESHIP_ROLES = [
+const SHIP_ROLES = [
   "Captain",
-  "Executive Officer (XO)",
-  "Pilot",
-  "Engineer",
-  "Tactical Officer",
-  "Communications Officer",
-  "Science Officer",
-  "Medical Officer",
+  "First Mate",
+  "Quartermaster",
   "Navigator",
-  "Operations Officer",
-  "Security Chief",
-  "Deck Chief",
-  "Janitor",
+  "Helmsman",
+  "Boatswain",
+  "Sailing Master",
+  "Ship's Doctor",
+  "Cook",
+  "Gunner",
+  "Carpenter",
+  "Lookout",
+  "Cabin Boy",
+  "Swabbie",
 ];
 
 // Function to get role rank for sorting
 function getRoleRank(role: string): number {
-  const index = SPACESHIP_ROLES.indexOf(role);
+  const index = SHIP_ROLES.indexOf(role);
   return index === -1 ? 999 : index; // Unknown roles go to the end
 }
 
@@ -75,9 +76,9 @@ export default function TeamManagement() {
     const activityId = id();
     const now = Date.now();
 
-    // Easter egg: Mike is always the Janitor
+    // Easter egg: Mike is always the Swabbie
     const finalRole = newMemberName.trim().toLowerCase() === "mike"
-      ? "Janitor"
+      ? "Swabbie"
       : newMemberRole.trim();
 
     await db.transact([
@@ -332,7 +333,7 @@ export default function TeamManagement() {
               className="w-full bg-gray-900 border border-gray-700 rounded px-4 py-3 text-white font-mono focus:border-space-400 focus:outline-none transition-colors"
             >
               <option value="">Select Role...</option>
-              {SPACESHIP_ROLES.map((role) => (
+              {SHIP_ROLES.map((role) => (
                 <option key={role} value={role}>
                   {role}
                 </option>
