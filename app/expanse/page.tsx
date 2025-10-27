@@ -399,7 +399,7 @@ function MissionCard({ okr }: { okr: any }) {
   const progressDelta = progress - timeProgress;
 
   // Calculate actual health status based on current progress
-  let actualHealth = okr.health || "unknown";
+  let actualHealth: "on-track" | "at-risk" | "blocked" | "unknown" = okr.health || "unknown";
   if (!allComplete) {
     // If we're past the target date
     if (now > okr.targetDate) {
@@ -572,7 +572,7 @@ function CrewIndicator({ crew }: { crew: any }) {
               key={i}
               className={`flex-1 h-1 transition-all ${
                 barFilled
-                  ? progressColor.split(' ')[0].replace('text-', 'bg-')
+                  ? progressColor.split(' ')[0]?.replace('text-', 'bg-') || 'bg-cyan-400'
                   : 'bg-cyan-900/30'
               }`}
             />

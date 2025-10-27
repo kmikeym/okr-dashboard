@@ -67,7 +67,7 @@ export default function CreateOKR() {
       const activityId = id();
 
       await db.transact([
-        db.tx.okrs[okrId].update({
+        db.tx!.okrs[okrId]!.update({
           title: title.trim(),
           description: description.trim() || undefined,
           quarter,
@@ -79,7 +79,7 @@ export default function CreateOKR() {
           updatedAt: now,
         }),
         ...validKRs.map((kr) =>
-          db.tx.keyResults[id()]
+          db.tx!.keyResults[id()]!
             .update({
               description: kr.description.trim(),
               target: Number(kr.target),
@@ -93,7 +93,7 @@ export default function CreateOKR() {
             .link({ okr: okrId })
         ),
         // Log activity
-        db.tx.activities[activityId].update({
+        db.tx!.activities[activityId]!.update({
           type: "created",
           description: `Created OKR: ${title.trim()}`,
           author: "Team", // TODO: Add real user auth

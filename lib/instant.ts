@@ -12,15 +12,8 @@ export const db = init({ appId: APP_ID, schema });
 export { id };
 
 // Helper types derived from schema
-export type Schema = typeof schema;
-export type OKR = Schema["okrs"];
-export type KeyResult = Schema["keyResults"];
-export type Reflection = Schema["reflections"];
-export type Comment = Schema["comments"];
-export type Action = Schema["actions"];
-export type Risk = Schema["risks"];
-export type Member = Schema["members"];
-export type Activity = Schema["activities"];
+// Note: These types are inferred from the schema but not directly indexable
+// Use the InstantDB query results directly instead
 
 // Status type guards
 export const OKRStatus = {
@@ -71,12 +64,12 @@ export function getCurrentWave(): string {
 
 export function getNextQuarter(current: string): string {
   const [year, q] = current.split('-Q');
-  const quarter = parseInt(q);
+  const quarter = parseInt(q || '1');
 
   if (quarter === 4) {
-    return `${parseInt(year) + 1}-Q1`;
+    return `${parseInt(year || '2025') + 1}-Q1`;
   }
-  return `${year}-Q${quarter + 1}`;
+  return `${year || '2025'}-Q${quarter + 1}`;
 }
 
 export function calculateProgress(current: number, target: number): number {

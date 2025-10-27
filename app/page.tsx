@@ -315,7 +315,7 @@ function OKRCard({ okr }: { okr: any }) {
   }, [okr.targetDate]);
 
   // Calculate actual health status based on current progress
-  let actualHealth = okr.health || "unknown";
+  let actualHealth: "on-track" | "at-risk" | "blocked" | "unknown" = okr.health || "unknown";
   if (!allComplete) {
     // If we're past the target date
     if (now > okr.targetDate) {

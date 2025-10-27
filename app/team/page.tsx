@@ -81,7 +81,7 @@ export default function TeamManagement() {
       : newMemberRole.trim();
 
     await db.transact([
-      db.tx.members[memberId].update({
+      db.tx!.members[memberId]!.update({
         name: newMemberName.trim(),
         email: finalRole, // Using email field to store role
         role: "member",
@@ -89,7 +89,7 @@ export default function TeamManagement() {
         joinedAt: now,
       }),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "created",
         description: `Added team member: ${newMemberName.trim()} (${finalRole})`,
         author: "Team", // TODO: Add real user auth
@@ -107,11 +107,11 @@ export default function TeamManagement() {
     const action = currentActive ? "Deactivated" : "Activated";
 
     await db.transact([
-      db.tx.members[memberId].update({
+      db.tx!.members[memberId]!.update({
         isActive: !currentActive,
       }),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "updated",
         description: `${action} team member: ${memberName} (${memberRole})`,
         author: "Team", // TODO: Add real user auth

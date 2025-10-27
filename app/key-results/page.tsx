@@ -103,12 +103,12 @@ function KeyResultRow({ keyResult }: { keyResult: any }) {
     const activityId = id();
 
     await db.transact([
-      db.tx.keyResults[keyResult.id].update({
+      db.tx!.keyResults[keyResult.id]!.update({
         current: Number(currentValue),
         updatedAt: now,
       }),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "updated",
         description: `Updated progress on "${keyResult.description}" to ${currentValue}/${keyResult.target} ${keyResult.unit}`,
         author: "Team", // TODO: Add real user auth
@@ -118,12 +118,13 @@ function KeyResultRow({ keyResult }: { keyResult: any }) {
     setIsEditing(false);
   };
 
+  const health: "on-track" | "at-risk" | "blocked" | "unknown" = keyResult.okrHealth || "unknown";
   const healthColor = {
     "on-track": "text-alert-normal",
     "at-risk": "text-alert-warning",
     blocked: "text-alert-critical",
     unknown: "text-gray-400",
-  }[keyResult.okrHealth || "unknown"];
+  }[health];
 
   return (
     <div className="bg-gray-900 border border-gray-700 rounded-lg p-5 hover:border-gray-600 transition-colors">

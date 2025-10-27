@@ -42,7 +42,7 @@ export default function ReflectionMode() {
     const now = Date.now();
 
     await db.transact([
-      db.tx.comments[commentId].update({
+      db.tx!.comments[commentId]!.update({
         content: noteContent.trim(),
         author: "Team", // TODO: Add real user auth
         createdAt: now,

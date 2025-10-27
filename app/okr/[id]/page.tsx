@@ -62,14 +62,14 @@ export default function OKRDetail() {
     const activityId = id();
 
     await db.transact([
-      db.tx.okrs[okrId].update({
+      db.tx!.okrs[okrId]!.update({
         title: editedTitle.trim(),
         description: editedDescription.trim() || undefined,
         targetDate: targetDateTimestamp,
         updatedAt: now,
       }),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "updated",
         description: `Updated OKR: ${editedTitle.trim()}`,
         author: "Team", // TODO: Add real user auth
@@ -89,9 +89,9 @@ export default function OKRDetail() {
     const activityId = id();
 
     await db.transact([
-      db.tx.okrs[okrId].delete(),
+      db.tx!.okrs[okrId]!.delete(),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "updated",
         description: `Deleted OKR: ${okr?.title}`,
         author: "Team", // TODO: Add real user auth
@@ -109,13 +109,13 @@ export default function OKRDetail() {
     const keyResults = okr?.keyResults || [];
 
     // Build transaction to mark OKR as completed and set all KRs to their target values
-    const transactions = [
-      db.tx.okrs[okrId].update({
+    const transactions: any[] = [
+      db.tx!.okrs[okrId]!.update({
         status: "completed",
         updatedAt: now,
       }),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "completed",
         description: `Completed OKR: ${okr?.title}`,
         author: "Team", // TODO: Add real user auth
@@ -126,7 +126,7 @@ export default function OKRDetail() {
     // Mark all key results as complete by setting current = target
     keyResults.forEach((kr: any) => {
       transactions.push(
-        db.tx.keyResults[kr.id].update({
+        db.tx!.keyResults[kr.id]!.update({
           current: kr.target,
           updatedAt: now,
         })
@@ -160,16 +160,16 @@ export default function OKRDetail() {
     const activityId = id();
 
     await db.transact([
-      db.tx.keyResults[krId].update({
+      db.tx!.keyResults[krId]!.update({
         current: newCurrent,
         updatedAt: now,
       }),
-      db.tx.okrs[okrId].update({
+      db.tx!.okrs[okrId]!.update({
         health: newHealth,
         updatedAt: now,
       }),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "updated",
         description: `Updated progress on "${kr?.description}" to ${newCurrent}/${kr?.target} ${kr?.unit}`,
         author: "Team", // TODO: Add real user auth
@@ -549,7 +549,7 @@ function KeyResultCard({
     const activityId = id();
 
     await db.transact([
-      db.tx.keyResults[keyResult.id].update({
+      db.tx!.keyResults[keyResult.id]!.update({
         description: editedDescription.trim(),
         target: Number(editedTarget),
         unit: editedUnit,
@@ -557,7 +557,7 @@ function KeyResultCard({
         updatedAt: now,
       }),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "updated",
         description: `Updated Key Result: ${editedDescription.trim()}`,
         author: "Team", // TODO: Add real user auth
@@ -573,13 +573,13 @@ function KeyResultCard({
     const activityId = id();
 
     await db.transact([
-      db.tx.keyResults[keyResult.id].delete(),
+      db.tx!.keyResults[keyResult.id]!.delete(),
       // Update OKR timestamp
-      db.tx.okrs[okrId].update({
+      db.tx!.okrs[okrId]!.update({
         updatedAt: now,
       }),
       // Log activity
-      db.tx.activities[activityId].update({
+      db.tx!.activities[activityId]!.update({
         type: "updated",
         description: `Deleted Key Result: ${keyResult.description}`,
         author: "Team", // TODO: Add real user auth
